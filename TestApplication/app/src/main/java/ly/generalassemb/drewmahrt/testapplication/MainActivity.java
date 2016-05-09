@@ -25,18 +25,11 @@ public class MainActivity extends AppCompatActivity {
 
         mStatesArray = getResources().getStringArray(R.array.states);
 
-        ListView listView = (ListView)findViewById(R.id.list_view);
+        final ListView listView = (ListView)findViewById(R.id.list_view);
 
-        TextView emptyText = (TextView)findViewById(R.id.emptyText);
+        final TextView emptyText = (TextView)findViewById(R.id.emptyText);
         listView.setEmptyView(emptyText);
 
-        FloatingActionButton fab = (FloatingActionButton)findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mStatesArray = new String[]{};
-            }
-        });
 
         mAdapter = new BaseAdapter() {
             @Override
@@ -79,9 +72,20 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(MainActivity.this,PositionActivity.class);
+                intent.putExtra("position", position);
                 startActivity(intent);
             }
         });
+
+        FloatingActionButton fab = (FloatingActionButton)findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listView.setAdapter(null);
+                mAdapter.notifyDataSetChanged();
+            }
+        });
+
     }
 
 }
